@@ -5,8 +5,10 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 5555;
 
+
 // Serve only the static files form the dist directory
 app.use(express.static(__dirname + '/dist/product-ui'));
+
 
 app.get('/*', function(req,res) {
     
