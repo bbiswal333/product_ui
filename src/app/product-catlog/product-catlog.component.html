@@ -1,7 +1,7 @@
 <div class="card">
      <h5 class="card-header">Products {{count}}</h5>  
   <div  style="overflow-y:scroll;overflow-x: hidden;max-height: 600px;">
-     <i *ngIf="loader" class="fa fa-circle-o-notch fa-spin"style="font-size:50px;margin: 40px 0px 10px 511px;"></i>
+     <h5 *ngIf="loader">Loading...</h5>
   <div class="row">
     <div class="col" *ngFor="let product of data">
       <a href="#" routerLink="/product/{{product.productId}}">
