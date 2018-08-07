@@ -1,0 +1,9 @@
+.price {
+    font-size: 28px;
+    margin-bottom: 2px;
+    float: right;
+    font-weight: bold;
+}
+.card-title {
+    color: cornflowerblue;
+}
