@@ -305,7 +305,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\n  <h5 class=\"card-header\">\n    <button type=\"button\" class=\"btn btn-primary btn-sm\">\n          <span class=\"fa fa-arrow-left\" routerLink=\"/products\"></span>\n    </button>\n  </h5>\n  <div>\n   <h5 *ngIf=\"loader\">Loading...</h5>\n  </div>\n  <div class=\"card-body\" *ngIf=\"product!=null\">\n     \n    <h5 class=\"card-title\">{{product.name}}  <span style=\"float:right\">&euro; {{product.price}}</span></h5>\n    <h6 class=\"card-subtitle mb-2 text-muted\">{{product.productId}}</h6>\n    <i><p class=\"card-text\">{{product.shortDescription}}</p></i>\n    <hr/>\n    <p class=\"card-text\">\n      <span  class=\"badge badge-info\"> {{product.category}}</span>&nbsp;\n      <span class=\"badge badge-warning\"> {{product.weight}}<i>{{product.weightUnit}}</i></span>&nbsp;\n      <span  class=\"badge badge-primary\"> \n        {{product.dimensionWidth}} <i>(w)</i> \n        <i class=\"fa fa-times\"></i>\n        {{product.dimensionHeight}}<i>(h)</i>\n        <i class=\"fa fa-times\"></i>\n        {{product.dimensionDepth}} <i>(d)</i>\n        {{product.dimensionUnit}}\n      </span>\n    </p>\n   <p style=\"color:green\" class=\"card-text\" *ngIf=\"stocks!=null\">\n     <b>{{stocks.quantity}}</b> <i class=\"text-muted\"> available in the stock</i>\n   </p>\n  </div>\n</div>\n"
+module.exports = "<div class=\"card\">\n  <h5 class=\"card-header\">\n    <button type=\"button\" class=\"btn btn-primary btn-sm\">\n          <span class=\"fa fa-arrow-left\" routerLink=\"/products\"></span>\n    </button>\n  </h5>\n  <div>\n   <h5 *ngIf=\"loader\">Loading...</h5>\n  </div>\n  <div class=\"card-body\" *ngIf=\"product!=null\">\n     \n    <h5 class=\"card-title\">{{product.name}}  <span style=\"float:right\">&euro; {{product.price}}</span></h5>\n    <h6 class=\"card-subtitle mb-2 text-muted\">{{product.productId}}</h6>\n    <i><p class=\"card-text\">{{product.shortDescription}}</p></i>\n    <hr/>\n    <p class=\"card-text\">\n      <span  class=\"badge badge-info\"> {{product.category}}</span>&nbsp;\n      <span class=\"badge badge-warning\"> {{product.weight}}<i>{{product.weightUnit}}</i></span>&nbsp;\n      <span  class=\"badge badge-primary\"> \n        {{product.dimensionWidth}} <i>(w)</i> \n        <i class=\"fa fa-times\"></i>\n        {{product.dimensionHeight}}<i>(h)</i>\n        <i class=\"fa fa-times\"></i>\n        {{product.dimensionDepth}} <i>(d)</i>\n        {{product.dimensionUnit}}\n      </span>\n    </p>\n   <p style=\"color:green\" class=\"card-text\" *ngIf=\"stocks!=null\">\n     <b>{{stocks.quantity}}</b> <i class=\"text-muted\"> available in the stock</i>\n   </p>\n  </div>\n</div>\n<div class=\"card\">\n  <h5 class=\"card-header\">\n    <button (click)=\"getAllCustomers()\" style=\"float: right\" type=\"button\" class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\"#myModal\">\n          Write a review\n    </button>\n  </h5>\n  <div>\n   <!--<h5 *ngIf=\"loader\">Loading...</h5>-->\n  </div>\n  <div class=\"card-body\">\n     \n    \n  </div>\n</div>\n\n<!-- Modal -->\n<div id=\"myModal\" class=\"modal fade\" role=\"dialog\">\n  <div class=\"modal-dialog modal-lg\">\n\n    <!-- Modal content-->\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\">Write a review</h4>\n      </div>\n      <div class=\"modal-body\">\n        <h5 *ngIf=\"review_loader\">Loading...</h5>\n        <form *ngIf=\"customers!=null && product!=null\">\n          <div style=\"margin-bottom: 30px;\" class=\"form-group\"> \n              <label style=\"font-weight: bold;margin-right: 10px\"  for=\"sel1\"><i>Customer name: </i></label>\n              <input type=\"hidden\" name=\"customerId\" value=\"{{randomCustomerId}}\"/>\n              <span class=\"badge badge-warning\"><i>{{randomCustomerName}}</i></span>\n              <input type=\"hidden\" name=\"productId\" value=\"{{product.productId}}\"/>\n            <hr>\n          </div>\n          <div class=\"form-group\">\n            <label style=\"font-weight: bold;margin-right: 10px\"><i>Add a headline </i></label>\n             <input type=\"text\" name=\"headline\" class=\"form-control\">\n          </div>\n          <div class=\"form-group\">\n            <label style=\"font-weight: bold;margin-right: 10px\"><i>Write your review </i></label>\n             <textarea name=\"description\" class=\"form-control\"></textarea>\n          </div>\n        </form>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n        <button type=\"submit\" class=\"btn btn-success\">Submit</button>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -341,9 +341,15 @@ var ProductDetailsComponent = /** @class */ (function () {
         this.activeRoute = activeRoute;
         this.http = http;
         this.loader = true;
+        this.review_loader = true;
         this.apiURL = 'https://product-service-cloud.herokuapp.com/product.svc/api/v1';
+        this.customerApiURL = 'https://customer-service-cloud.herokuapp.com/customer.svc/api/v1';
         this.product = null;
         this.stocks = null;
+        this.customers = null;
+        this.randomCustomerId = null;
+        this.randomCustomerName = null;
+        this.randomValue = 0;
     }
     ProductDetailsComponent.prototype.ngOnInit = function () {
         var queryParams = this.activeRoute.snapshot.queryParams;
@@ -354,6 +360,10 @@ var ProductDetailsComponent = /** @class */ (function () {
     };
     ProductDetailsComponent.prototype.getData = function (value) {
         return this.http.get(this.apiURL + '/' + value)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) { return res.json(); }));
+    };
+    ProductDetailsComponent.prototype.getCustomerData = function (value) {
+        return this.http.get(this.customerApiURL + '/' + value)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) { return res.json(); }));
     };
     ProductDetailsComponent.prototype.getStocks = function (id) {
@@ -371,6 +381,29 @@ var ProductDetailsComponent = /** @class */ (function () {
             console.log(data);
             _this.product = data;
             _this.loader = false;
+        });
+    };
+    ProductDetailsComponent.prototype.getAllCustomers = function () {
+        var _this = this;
+        this.getCustomerData('customers/').subscribe(function (data) {
+            console.log("Getting all customers...");
+            console.log(data);
+            _this.customers = data;
+            _this.review_loader = false;
+            _this.getRandomCustomer();
+        });
+    };
+    ProductDetailsComponent.prototype.getRandomValue = function (min, max) {
+        return (Math.floor(Math.random() * max) + min);
+    };
+    ProductDetailsComponent.prototype.getRandomCustomer = function () {
+        var _this = this;
+        this.randomValue = this.getRandomValue(0, this.customers.length);
+        this.customers.forEach(function (customer, index) {
+            if (index === _this.randomValue) {
+                _this.randomCustomerName = customer.firstName + " " + customer.lastName;
+                _this.randomCustomerId = customer.customerId;
+            }
         });
     };
     ProductDetailsComponent = __decorate([
