@@ -59,6 +59,7 @@ getProductById(id){
    })
 }
 getAllCustomers(){
+  this.review_loader = true;
   this.getCustomerData('customers/').subscribe(data => {
     console.log("Getting all customers...");
     console.log(data);

@@ -385,6 +385,7 @@ var ProductDetailsComponent = /** @class */ (function () {
     };
     ProductDetailsComponent.prototype.getAllCustomers = function () {
         var _this = this;
+        this.review_loader = true;
         this.getCustomerData('customers/').subscribe(function (data) {
             console.log("Getting all customers...");
             console.log(data);
