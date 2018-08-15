@@ -11,9 +11,16 @@ import { Http, Response } from '@angular/http';
 export class ProductDetailsComponent implements OnInit {
 
   loader: boolean = true;
+  review_loader: boolean = true;
   private apiURL = 'https://product-service-cloud.herokuapp.com/product.svc/api/v1';
+  private customerApiURL = 'https://customer-service-cloud.herokuapp.com/customer.svc/api/v1';
   product: any = null;
   stocks: any = null;
+  customers: any = null;
+  randomCustomerId: string = null;
+  randomCustomerName: string = null;  
+  randomValue: number = 0;
+
 
  constructor(private activeRoute: ActivatedRoute,private http: Http) {}
  ngOnInit() {
@@ -30,6 +37,12 @@ export class ProductDetailsComponent implements OnInit {
       map((res:Response) => res.json())
     );
   }
+  getCustomerData(value){
+  return this.http.get(this.customerApiURL+'/'+value)
+  .pipe(
+    map((res:Response) => res.json())
+  );
+}
 getStocks(id){
   this.getData('/stocks/'+id).subscribe(data => {
       console.log('Getting stocks of product - '+id)
@@ -44,6 +57,27 @@ getProductById(id){
       this.product = data;
       this.loader = false;
    })
+}
+getAllCustomers(){
+  this.getCustomerData('customers/').subscribe(data => {
+    console.log("Getting all customers...");
+    console.log(data);
+    this.customers = data;
+    this.review_loader = false;
+    this.getRandomCustomer();
+  })
+}
+getRandomValue(min,max){
+ return(Math.floor(Math.random() * max) + min )
+}
+getRandomCustomer(){
+  this.randomValue = this.getRandomValue(0,this.customers.length)
+  this.customers.forEach((customer,index) => {
+    if(index === this.randomValue){
+      this.randomCustomerName = customer.firstName+" "+customer.lastName;
+      this.randomCustomerId = customer.customerId;
+    }
+  });
 }
 
 }

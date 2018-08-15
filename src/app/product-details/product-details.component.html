@@ -30,3 +30,55 @@
    </p>
   </div>
 </div>
+<div class="card">
+  <h5 class="card-header">
+    <button (click)="getAllCustomers()" style="float: right" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+          Write a review
+    </button>
+  </h5>
+  <div>
+   <!--<h5 *ngIf="loader">Loading...</h5>-->
+  </div>
+  <div class="card-body">
+     
+    
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Write a review</h4>
+      </div>
+      <div class="modal-body">
+        <h5 *ngIf="review_loader">Loading...</h5>
+        <form *ngIf="customers!=null && product!=null">
+          <div style="margin-bottom: 30px;" class="form-group"> 
+              <label style="font-weight: bold;margin-right: 10px"  for="sel1"><i>Customer name: </i></label>
+              <input type="hidden" name="customerId" value="{{randomCustomerId}}"/>
+              <span class="badge badge-warning"><i>{{randomCustomerName}}</i></span>
+              <input type="hidden" name="productId" value="{{product.productId}}"/>
+            <hr>
+          </div>
+          <div class="form-group">
+            <label style="font-weight: bold;margin-right: 10px"><i>Add a headline </i></label>
+             <input type="text" name="headline" class="form-control">
+          </div>
+          <div class="form-group">
+            <label style="font-weight: bold;margin-right: 10px"><i>Write your review </i></label>
+             <textarea name="description" class="form-control"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </div>
+    </div>
+
+  </div>
+</div>
