@@ -56,7 +56,7 @@
       </div>
       <div class="modal-body">
         <h5 *ngIf="review_loader">Loading...</h5>
-        <form *ngIf="customers!=null && product!=null">
+        <form *ngIf="customers!=null && product!=null && review_loader!=true">
           <div style="margin-bottom: 30px;" class="form-group"> 
               <label style="font-weight: bold;margin-right: 10px"  for="sel1"><i>Customer name: </i></label>
               <input type="hidden" name="customerId" value="{{randomCustomerId}}"/>
