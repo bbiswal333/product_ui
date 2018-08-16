@@ -5,13 +5,17 @@
     </button>
   </h5>
   <div>
-   <h5 *ngIf="loader">Loading...</h5>
+   <h5 *ngIf="loader">&nbsp; Loading...</h5>
   </div>
   <div class="card-body" *ngIf="product!=null">
      
-    <h5 class="card-title">{{product.name}}  <span style="float:right">&euro; {{product.price}}</span></h5>
-    <h6 class="card-subtitle mb-2 text-muted">{{product.productId}}</h6>
-    <i><p class="card-text">{{product.shortDescription}}</p></i>
+    <h5 class="card-title">{{product.name}} <span class="card-subtitle mb-2 text-muted">({{product.productId}})</span></h5>
+    <p>
+        <span  class="badge badge-success">3.7 <i class="fa fa-star fa-sm"></i></span>
+        <span style="margin-left: 5px;" class="text-muted">29 reviews</span>
+    </p>
+    <h4><span style="float:left">&euro; {{product.price}}</span></h4><br/><br/>
+    <p class="card-text"><i>{{product.shortDescription}}</i></p>
     <hr/>
     <p class="card-text">
       <span  class="badge badge-info"> {{product.category}}</span>&nbsp;
@@ -32,6 +36,7 @@
 </div>
 <div class="card">
   <h5 class="card-header">
+    <h5 style="float: left">Reviews and Ratings</h5>
     <button (click)="getAllCustomers()" style="float: right" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
           Write a review
     </button>
@@ -40,7 +45,36 @@
    <!--<h5 *ngIf="loader">Loading...</h5>-->
   </div>
   <div class="card-body">
-     
+     <!--Review list goes here-->
+      <!--<div class="row">-->
+        <div class="col-sm-8">
+            <div class="panel panel-white post panel-shadow">
+                <div class="post-heading">
+                    <div class="pull-left image">
+                        <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
+                    </div>
+                    <div class="pull-left meta">
+                        <div class="title h5">
+                            <a href="#"><b>Ryan Haywood</b></a>
+                            made a review.
+                        </div>
+                        <h6 class="text-muted time">1 minute ago</h6>
+                    </div>
+                </div> 
+                <div class="post-description"> 
+                    <p>Bootdey is a gallery of free snippets resources templates and utilities for bootstrap css hmtl js framework. Codes for developers and web designers</p>
+                    <div class="stats">
+                        <a href="#" class="btn btn-default stat-item">
+                            <i class="fa fa-thumbs-up icon"></i>2
+                        </a>
+                        <a href="#" class="btn btn-default stat-item">
+                            <i class="fa fa-thumbs-down icon"></i>12
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <!--</div>-->
     
   </div>
 </div>
@@ -65,12 +99,8 @@
             <hr>
           </div>
           <div class="form-group">
-            <label style="font-weight: bold;margin-right: 10px"><i>Add a headline </i></label>
-             <input type="text" name="headline" class="form-control">
-          </div>
-          <div class="form-group">
             <label style="font-weight: bold;margin-right: 10px"><i>Write your review </i></label>
-             <textarea name="description" class="form-control"></textarea>
+             <textarea name="description" class="form-control" style="height: 250px;"></textarea>
           </div>
         </form>
       </div>
