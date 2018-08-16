@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Http, Response } from '@angular/http';
+import { HttpHeaders } from '@angular/common/http'; 
 
 @Component({
   selector: 'app-product-details',
@@ -12,8 +13,11 @@ export class ProductDetailsComponent implements OnInit {
 
   loader: boolean = true;
   review_loader: boolean = true;
+  review_list_loader: boolean = true;
   private apiURL = 'https://product-service-cloud.herokuapp.com/product.svc/api/v1';
   private customerApiURL = 'https://customer-service-cloud.herokuapp.com/customer.svc/api/v1';
+  private productReviewApiURL = "https://customer-service-cloud.herokuapp.com/review.svc/api/v1";
+  productReviews: any = null;
   product: any = null;
   stocks: any = null;
   customers: any = null;
@@ -21,6 +25,14 @@ export class ProductDetailsComponent implements OnInit {
   randomCustomerName: string = null;  
   randomValue: number = 0;
 
+  //review form data
+  description: String = null;
+  customerId: String;
+  productId: String = null;
+  rating: number = 0.0;
+  sentiments: String = null;
+
+  review_created_message: String;
 
  constructor(private activeRoute: ActivatedRoute,private http: Http) {}
  ngOnInit() {
@@ -30,55 +42,103 @@ export class ProductDetailsComponent implements OnInit {
     // do something with the parameters
     this.getProductById(routeParams.id);
     this.getStocks(routeParams.id);
-}
- getData(value){
-    return this.http.get(this.apiURL+'/'+value)
+    this.getProductReview(routeParams.id);
+  }
+  getData(value){
+      return this.http.get(this.apiURL+'/'+value)
+      .pipe(
+        map((res:Response) => res.json())
+      );
+  }
+  getCustomerData(value){
+    return this.http.get(this.customerApiURL+'/'+value)
     .pipe(
       map((res:Response) => res.json())
     );
   }
-  getCustomerData(value){
-  return this.http.get(this.customerApiURL+'/'+value)
-  .pipe(
-    map((res:Response) => res.json())
-  );
-}
-getStocks(id){
-  this.getData('/stocks/'+id).subscribe(data => {
-      console.log('Getting stocks of product - '+id)
+  getProductReviewData(value){
+    return this.http.get(this.productReviewApiURL+'/'+value)
+    .pipe(
+      map((res:Response) => res.json())
+    );
+  }
+  getStocks(id){
+    this.getData('/stocks/'+id).subscribe(data => {
+        console.log('Getting stocks of product - '+id)
+        console.log(data);
+        this.stocks = data;
+    })
+  }
+  getProductById(id){
+    this.getData('/products/'+id).subscribe(data => {
+        console.log('Getting product - '+id)
+        console.log(data);
+        this.product = data;
+        this.productId = this.product.productId;
+        this.loader = false;
+    })
+  }
+  getAllCustomers(){
+    this.review_loader = true;
+    this.getCustomerData('customers/').subscribe(data => {
+      console.log("Getting all customers...");
       console.log(data);
-      this.stocks = data;
-   })
-}
-getProductById(id){
-  this.getData('/products/'+id).subscribe(data => {
-      console.log('Getting product - '+id)
-      console.log(data);
-      this.product = data;
-      this.loader = false;
-   })
-}
-getAllCustomers(){
-  this.review_loader = true;
-  this.getCustomerData('customers/').subscribe(data => {
-    console.log("Getting all customers...");
-    console.log(data);
-    this.customers = data;
-    this.review_loader = false;
-    this.getRandomCustomer();
-  })
-}
-getRandomValue(min,max){
- return(Math.floor(Math.random() * max) + min )
-}
-getRandomCustomer(){
-  this.randomValue = this.getRandomValue(0,this.customers.length)
-  this.customers.forEach((customer,index) => {
-    if(index === this.randomValue){
-      this.randomCustomerName = customer.firstName+" "+customer.lastName;
-      this.randomCustomerId = customer.customerId;
-    }
-  });
-}
+      this.customers = data;
+      this.review_loader = false;
+      this.review_created_message = ""
+      this.getRandomCustomer();
+    })
+  }
+  getRandomValue(min,max){
+  return(Math.floor(Math.random() * max) + min )
+  }
+  getRandomCustomer(){
+    this.randomValue = this.getRandomValue(0,this.customers.length)
+    this.customers.forEach((customer,index) => {
+      if(index === this.randomValue){
+        this.randomCustomerName = customer.firstName+" "+customer.lastName;
+        this.randomCustomerId = customer.customerId;
+        this.customerId = this.randomCustomerId;
+      }
+    });
+  }
 
+  getProductReview(productId){
+    this.getProductReviewData('/reviews/'+productId).subscribe(data => {
+      console.log("Getting product reviews..");
+      this.productReviews = data;
+      this.review_list_loader = false;
+      console.log(data);
+    });
+  }
+
+  resetReviewForm(){
+    this.description = null;
+  }
+  postReviewForm(){
+    let httpHeaders = new HttpHeaders({
+     'Content-Type' : 'application/json',
+     'Cache-Control': 'no-cache'
+    }); 
+    let httpOptions = {
+     headers: httpHeaders
+    };
+  
+    let body = {
+      "productId":this.productId,
+      "reviewDescription":this.description,
+      "rating": 3.5,
+      "sentiments": "Positive"
+    };
+    // console.log(body)
+     console.log(this.productReviewApiURL+"/reviews/"+this.customerId)
+    //making api call
+     return this.http.post(this.productReviewApiURL+"/reviews/"+this.customerId, body).subscribe(res => {
+       if(res.status == 201){
+         this.review_created_message = "Review added successfully."
+       }
+       this.getProductReview(this.productId);
+       this.resetReviewForm();
+     })
+  }
 }

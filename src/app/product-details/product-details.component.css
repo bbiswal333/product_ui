@@ -1,6 +1,4 @@
-.panel {
-    width: 1032px !important;
-}
+
 .panel-shadow {
     box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px;
 }
@@ -16,7 +14,9 @@
   background-color: #fff;
   border-color: #ddd;
 }
-
+.row {
+    margin-bottom: 10px;
+}
 .post .post-heading {
   height: 95px;
   padding: 20px 15px;

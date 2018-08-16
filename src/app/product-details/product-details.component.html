@@ -44,25 +44,28 @@
   <div>
    <!--<h5 *ngIf="loader">Loading...</h5>-->
   </div>
-  <div class="card-body">
+  <div class="card-body"  *ngIf="productReviews!=null">
      <!--Review list goes here-->
-      <!--<div class="row">-->
-        <div class="col-sm-8">
+      <div>
+        <h5 *ngIf="review_list_loader">&nbsp; Loading...</h5>
+      </div>
+      <div class="row" *ngFor="let review of productReviews">
+         <div class="col-sm-8">
             <div class="panel panel-white post panel-shadow">
                 <div class="post-heading">
                     <div class="pull-left image">
                         <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
                     </div>
                     <div class="pull-left meta">
-                        <div class="title h5">
-                            <a href="#"><b>Ryan Haywood</b></a>
+                        <div class="title h6">
+                            <a href="#"><b>{{review.customer.firstName +" "+review.customer.lastName}}</b></a>
                             made a review.
                         </div>
                         <h6 class="text-muted time">1 minute ago</h6>
                     </div>
                 </div> 
                 <div class="post-description"> 
-                    <p>Bootdey is a gallery of free snippets resources templates and utilities for bootstrap css hmtl js framework. Codes for developers and web designers</p>
+                    <p>{{review.reviewDescription}}</p>
                     <div class="stats">
                         <a href="#" class="btn btn-default stat-item">
                             <i class="fa fa-thumbs-up icon"></i>2
@@ -73,9 +76,10 @@
                     </div>
                 </div>
             </div>
-        </div>
-      <!--</div>-->
-    
+         </div>
+     </div>
+
+
   </div>
 </div>
 
@@ -88,27 +92,29 @@
       <div class="modal-header">
         <h4 class="modal-title">Write a review</h4>
       </div>
+       <h5 *ngIf="review_loader">&nbsp;Loading...</h5>
+        
+      <form (ngSubmit)="postReviewForm()" *ngIf="customers!=null && product!=null && review_loader!=true">
       <div class="modal-body">
-        <h5 *ngIf="review_loader">Loading...</h5>
-        <form *ngIf="customers!=null && product!=null && review_loader!=true">
-          <div style="margin-bottom: 30px;" class="form-group"> 
+         <div style="margin-bottom: 30px;" class="form-group"> 
               <label style="font-weight: bold;margin-right: 10px"  for="sel1"><i>Customer name: </i></label>
-              <input type="hidden" name="customerId" value="{{randomCustomerId}}"/>
+              <input type="hidden" name="customerId" value="{{randomCustomerId}}" [(ngModel)]="customerId"/>
               <span class="badge badge-warning"><i>{{randomCustomerName}}</i></span>
-              <input type="hidden" name="productId" value="{{product.productId}}"/>
+              <input type="hidden" name="productId" value="{{product.productId}}"  [(ngModel)]="productId" />
             <hr>
           </div>
           <div class="form-group">
             <label style="font-weight: bold;margin-right: 10px"><i>Write your review </i></label>
-             <textarea name="description" class="form-control" style="height: 250px;"></textarea>
+             <textarea name="description" class="form-control" style="height: 250px;" [(ngModel)]="description"></textarea>
           </div>
-        </form>
       </div>
       <div class="modal-footer">
+        <p style="font-weight: bold; color: green; float: left">
+          {{review_created_message}}
+        </p>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-success">Submit</button>
       </div>
-    </div>
-
+    </form>
   </div>
 </div>
