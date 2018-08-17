@@ -36,6 +36,7 @@ export class ProductDetailsComponent implements OnInit {
   product_reviews_count: number = 0;
   review_submit_button: boolean = false;
   isReviewSubmitted: boolean = false;
+  charactersRemaining: number = 500;
 
   constructor(private activeRoute: ActivatedRoute, private http: Http) { }
   ngOnInit() {
@@ -143,10 +144,25 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
   onKeyDescription(event: any) {
+    this.charactersRemaining = 500 - event.target.value.length;
     if (event.target.value.length > 5) {
       this.review_submit_button = true;
     } else {
       this.review_submit_button = false;
     }
   }
+
+  correctSentence(sentence) {
+    return this.http.get('/sentence/correction?q=' + sentence)
+      .pipe(
+      map((res: Response) => res.json())
+      );
+  }
+  checkSentence(event) {
+    this.correctSentence(event.target.value).subscribe(data => {
+      this.description = data.correctedSentence;
+      console.log(this.description);
+    });
+  }
+  
 }

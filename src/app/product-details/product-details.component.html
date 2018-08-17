@@ -130,7 +130,8 @@
           </div>
           <div [hidden]="isReviewSubmitted" class="form-group">
             <label style="font-weight: bold;margin-right: 10px"><i>Write your review </i></label>
-            <textarea (keyup)="onKeyDescription($event)" name="description" class="form-control" style="height: 250px;" [(ngModel)]="description"></textarea>
+            <span style="color: green">{{charactersRemaining}}</span><i> characters remaining.</i>
+            <textarea maxlength="500" (focusout)="checkSentence($event)" (keyup)="onKeyDescription($event)" name="description" class="form-control" style="height: 250px;margin-bottom:-85px;" [(ngModel)]="description"></textarea>
           </div>
 
           <div style="position: absolute;left: 40%;top:40%; display: inline-block;height:150px;" *ngIf="isReviewSubmitted">
