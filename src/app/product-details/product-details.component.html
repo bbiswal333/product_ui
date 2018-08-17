@@ -6,17 +6,17 @@
   </h5>
   <div *ngIf="loader" style="min-height:100px;margin-top:20%">
     <div class="loading">
-          <div class="loading-bar"></div>
-          <div class="loading-bar"></div>
-          <div class="loading-bar"></div>
-          <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
     </div>
   </div>
-  <div  class="card-body" *ngIf="product!=null">
+  <div class="card-body" *ngIf="product!=null">
 
     <h5 class="card-title">{{product.name}} <span class="card-subtitle mb-2 text-muted">({{product.productId}})</span></h5>
     <p>
-      <span class="badge badge-success"*ngIf="product_reviews_count>0">3.7 <i class="fa fa-star fa-sm"></i></span>
+      <span class="badge badge-success" *ngIf="product_reviews_count>0">3.7 <i class="fa fa-star fa-sm"></i></span>
       <span style="margin-left: 5px;" class="text-muted" *ngIf="product_reviews_count==0">No Reviews yet</span>
       <span style="margin-left: 5px;" class="text-muted" *ngIf="product_reviews_count>0">{{product_reviews_count}} reviews</span>
     </p>
@@ -54,17 +54,17 @@
   <div class="card-body">
     <!--Review list goes here-->
     <div *ngIf="review_list_loader" style="margin-top:20%">
-        <div class="loading">
-          <div class="loading-bar"></div>
-          <div class="loading-bar"></div>
-          <div class="loading-bar"></div>
-          <div class="loading-bar"></div>
-        </div>
+      <div class="loading">
+        <div class="loading-bar"></div>
+        <div class="loading-bar"></div>
+        <div class="loading-bar"></div>
+        <div class="loading-bar"></div>
+      </div>
     </div>
     <div *ngIf="!review_list_loader">
       <h6 *ngIf="productReviews==''"> No reviews yet !!</h6>
     </div>
-     <div *ngIf="productReviews!=null">
+    <div *ngIf="productReviews!=null">
       <div class="row" *ngFor="let review of productReviews">
         <div class="col-sm-8">
           <div class="panel panel-white post panel-shadow">
@@ -98,7 +98,7 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Add Review Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
 
@@ -108,17 +108,18 @@
         <h4 class="modal-title">Write a review</h4>
       </div>
       <div *ngIf="review_loader" style="margin-top:20%">
-         <div class="loading">
+        <div class="loading">
           <div class="loading-bar"></div>
           <div class="loading-bar"></div>
           <div class="loading-bar"></div>
           <div class="loading-bar"></div>
         </div>
       </div>
-      <p *ngIf="isReviewSubmitted" style="font-weight: bold; color: green; display: inline-block; margin-left: 20px;margin-top: 30px;">
-            {{review_created_message}}
-      </p>
-      <form  (ngSubmit)="postReviewForm()" *ngIf="customers!=null && product!=null && review_loader!=true">
+      <!--<p *ngIf="isReviewSubmitted" style="font-weight: bold; color: green; display: inline-block; margin-left: 20px;margin-top: 30px;">
+        {{review_created_message}}
+      </p>-->
+
+      <form (ngSubmit)="postReviewForm()" *ngIf="customers!=null && product!=null && review_loader!=true">
         <div class="modal-body">
           <div [hidden]="isReviewSubmitted" style="margin-bottom: 30px;" class="form-group">
             <label style="font-weight: bold;margin-right: 10px" for="sel1"><i>Customer name: </i></label>
@@ -127,12 +128,26 @@
             <input type="hidden" name="productId" value="{{product.productId}}" [(ngModel)]="productId" />
             <hr>
           </div>
-          <div  [hidden]="isReviewSubmitted" class="form-group">
+          <div [hidden]="isReviewSubmitted" class="form-group">
             <label style="font-weight: bold;margin-right: 10px"><i>Write your review </i></label>
             <textarea (keyup)="onKeyDescription($event)" name="description" class="form-control" style="height: 250px;" [(ngModel)]="description"></textarea>
           </div>
+
+            <div style="position: absolute;left: 40%;top:40%; display: inline-block;height:150px;" *ngIf="isReviewSubmitted">
+        <!--success icon goes here-->
+         <svg style="width: 70px;height:70px;" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          viewBox="0 0 98.5 98.5" enable-background="new 0 0 98.5 98.5" xml:space="preserve">
+          <path class="checkmark" fill="none" stroke-width="8" stroke-miterlimit="10" d="M81.7,17.8C73.5,9.3,62,4,49.2,4
+          C24.3,4,4,24.3,4,49.2s20.3,45.2,45.2,45.2s45.2-20.3,45.2-45.2c0-8.6-2.4-16.6-6.5-23.4l0,0L45.6,68.2L24.7,47.3"/>
+        </svg>
+        <p style="margin-left: -55px;">{{review_created_message}}</p>
+      </div>
+
+
+
+
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="margin-top: 95px;">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button [hidden]="isReviewSubmitted" type="submit" class="btn btn-success" [disabled]="! review_submit_button">Submit</button>
         </div>
