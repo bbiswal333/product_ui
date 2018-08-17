@@ -115,27 +115,26 @@
           <div class="loading-bar"></div>
         </div>
       </div>
-
-      <form (ngSubmit)="postReviewForm()" *ngIf="customers!=null && product!=null && review_loader!=true">
+      <p *ngIf="isReviewSubmitted" style="font-weight: bold; color: green; display: inline-block; margin-left: 20px;margin-top: 30px;">
+            {{review_created_message}}
+      </p>
+      <form  (ngSubmit)="postReviewForm()" *ngIf="customers!=null && product!=null && review_loader!=true">
         <div class="modal-body">
-          <div style="margin-bottom: 30px;" class="form-group">
+          <div [hidden]="isReviewSubmitted" style="margin-bottom: 30px;" class="form-group">
             <label style="font-weight: bold;margin-right: 10px" for="sel1"><i>Customer name: </i></label>
             <input type="hidden" name="customerId" value="{{randomCustomerId}}" [(ngModel)]="customerId" />
             <span class="badge badge-warning"><i>{{randomCustomerName}}</i></span>
             <input type="hidden" name="productId" value="{{product.productId}}" [(ngModel)]="productId" />
             <hr>
           </div>
-          <div class="form-group">
+          <div  [hidden]="isReviewSubmitted" class="form-group">
             <label style="font-weight: bold;margin-right: 10px"><i>Write your review </i></label>
             <textarea (keyup)="onKeyDescription($event)" name="description" class="form-control" style="height: 250px;" [(ngModel)]="description"></textarea>
           </div>
         </div>
         <div class="modal-footer">
-          <p style="font-weight: bold; color: green; float: left">
-            {{review_created_message}}
-          </p>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-success" [disabled]="! review_submit_button">Submit</button>
+          <button [hidden]="isReviewSubmitted" type="submit" class="btn btn-success" [disabled]="! review_submit_button">Submit</button>
         </div>
       </form>
     </div>

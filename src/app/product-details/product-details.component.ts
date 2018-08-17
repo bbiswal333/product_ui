@@ -35,6 +35,7 @@ export class ProductDetailsComponent implements OnInit {
   review_created_message: String;
   product_reviews_count: number = 0;
   review_submit_button: boolean = false;
+  isReviewSubmitted: boolean = false;
 
  constructor(private activeRoute: ActivatedRoute,private http: Http) {}
  ngOnInit() {
@@ -82,12 +83,13 @@ export class ProductDetailsComponent implements OnInit {
   }
   getAllCustomers(){
     this.review_loader = true;
+    this.isReviewSubmitted = false;
+    this.review_created_message = "";
     this.getCustomerData('customers/').subscribe(data => {
       console.log("Getting all customers...");
       console.log(data);
       this.customers = data;
       this.review_loader = false;
-      this.review_created_message = ""
       this.getRandomCustomer();
     })
   }
@@ -119,7 +121,8 @@ export class ProductDetailsComponent implements OnInit {
     this.description = null;
   }
   postReviewForm(){
-  
+    this.review_submit_button = false;
+    this.review_loader = true;
     let body = {
       "productId":this.productId,
       "reviewDescription":this.description,
@@ -131,13 +134,14 @@ export class ProductDetailsComponent implements OnInit {
     //making api call
      return this.http.post(this.productReviewApiURL+"/reviews/"+this.customerId, body).subscribe(res => {
        if(res.status == 201){
+         this.isReviewSubmitted = true;
          this.review_created_message = "Review added successfully."
+         this.review_loader = false;
        }
        this.getProductReview(this.productId);
        this.resetReviewForm();
      });
   }
-
   onKeyDescription(event: any){
     if(event.target.value.length > 5){
       this.review_submit_button = true;
