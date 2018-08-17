@@ -33,6 +33,8 @@ export class ProductDetailsComponent implements OnInit {
   sentiments: String = null;
 
   review_created_message: String;
+  product_reviews_count: number = 0;
+  review_submit_button: boolean = false;
 
  constructor(private activeRoute: ActivatedRoute,private http: Http) {}
  ngOnInit() {
@@ -108,6 +110,7 @@ export class ProductDetailsComponent implements OnInit {
       console.log("Getting product reviews..");
       this.productReviews = data;
       this.review_list_loader = false;
+      this.product_reviews_count = data.length;
       console.log(data);
     });
   }
@@ -116,13 +119,6 @@ export class ProductDetailsComponent implements OnInit {
     this.description = null;
   }
   postReviewForm(){
-    let httpHeaders = new HttpHeaders({
-     'Content-Type' : 'application/json',
-     'Cache-Control': 'no-cache'
-    }); 
-    let httpOptions = {
-     headers: httpHeaders
-    };
   
     let body = {
       "productId":this.productId,
@@ -139,6 +135,14 @@ export class ProductDetailsComponent implements OnInit {
        }
        this.getProductReview(this.productId);
        this.resetReviewForm();
-     })
+     });
+  }
+
+  onKeyDescription(event: any){
+    if(event.target.value.length > 5){
+      this.review_submit_button = true;
+    }else{
+      this.review_submit_button = false;
+    }
   }
 }

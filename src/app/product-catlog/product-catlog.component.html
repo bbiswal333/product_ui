@@ -1,19 +1,26 @@
 <div class="card">
-     <h5 class="card-header">Products {{count}}</h5>  
-  <div  style="overflow-y:scroll;overflow-x: hidden;max-height: 600px;">
-     <h5 *ngIf="loader">Loading...</h5>
-  <div class="row">
-    <div class="col" *ngFor="let product of data">
-      <a href="#" routerLink="/product/{{product.productId}}">
-      <div class="card " style="width:15rem;margin: 5px" >
-        <div class="card-body">
-          <h5 class="card-title">{{product.name}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{product.productId}}</h6>
-         <p class="price">&euro; {{product.price}}</p>
-       </div>
+  <h5 class="card-header">Products {{count}}</h5>
+  <div style="overflow-y:scroll;overflow-x: hidden;max-height: 600px;">
+    <div class="row">
+      <div *ngIf="loader" style="margin-top:20%">
+        <div class="loading">
+          <div class="loading-bar"></div>
+          <div class="loading-bar"></div>
+          <div class="loading-bar"></div>
+          <div class="loading-bar"></div>
+        </div>
+     </div>
+      <div class="col" *ngFor="let product of data">
+        <a href="#" routerLink="/product/{{product.productId}}">
+          <div class="card " style="width:15rem;margin: 5px">
+            <div class="card-body">
+              <h5 class="card-title">{{product.name}}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{product.productId}}</h6>
+              <p class="price">&euro; {{product.price}}</p>
+            </div>
+          </div>
+        </a>
       </div>
-    </a>
     </div>
-  </div>
-  <div>
-</div>
+    <div>
+    </div>
