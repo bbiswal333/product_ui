@@ -9,19 +9,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { ProductCatlogComponent } from './product-catlog/product-catlog.component';
 import { ProductReviewComponent } from './product-review/product-review.component';
 
+import { TimeAgoPipe } from 'time-ago-pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
     ProductDetailsComponent,
     ProductCatlogComponent,
-    ProductReviewComponent
+    ProductReviewComponent,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
     HttpModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule  
  ],
   providers: [ProductCatlogComponent],
   bootstrap: [AppComponent]

@@ -38,6 +38,8 @@ export class ProductDetailsComponent implements OnInit {
   isReviewSubmitted: boolean = false;
   charactersRemaining: number = 500;
 
+  refreshId: any;
+
   constructor(private activeRoute: ActivatedRoute, private http: Http) { }
   ngOnInit() {
     const queryParams = this.activeRoute.snapshot.queryParams
@@ -47,6 +49,16 @@ export class ProductDetailsComponent implements OnInit {
     this.getProductById(routeParams.id);
     this.getStocks(routeParams.id);
     this.getProductReview(routeParams.id);
+
+     //refresh reviews every 2 sec
+    this.refreshId = setInterval(() => {
+      this.getProductReview(routeParams.id);
+    },2000);
+  }
+  ngOnDestroy() {
+    if(this.refreshId){
+      clearInterval(this.refreshId);
+    }
   }
   getData(value) {
     return this.http.get(this.apiURL + '/' + value)
@@ -163,6 +175,21 @@ export class ProductDetailsComponent implements OnInit {
       this.description = data.correctedSentence;
       console.log(this.description);
     });
+  }
+
+  updateReviewLikes(value){
+    this.http.put(this.productReviewApiURL+"/reviews/"+value+"/likes",null).subscribe(res => {
+      alert(res.status)
+    });
+  //  this.http.put(this.productReviewApiURL + "/reviews/" + this.customer).subscribe(res => {
+  //     if (res.status == 201) {
+  //       this.isReviewSubmitted = true;
+  //       this.review_created_message = "Review has been submitted"
+  //       this.review_loader = false;
+  //     }
+  //     this.getProductReview(this.productId);
+  //     this.resetReviewForm();
+  //   });
   }
   
 }
