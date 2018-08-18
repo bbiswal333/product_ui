@@ -420,6 +420,7 @@ var ProductDetailsComponent = /** @class */ (function () {
     };
     ProductDetailsComponent.prototype.getAllCustomers = function () {
         var _this = this;
+        this.resetReviewForm();
         this.review_loader = true;
         this.isReviewSubmitted = false;
         this.review_created_message = "";

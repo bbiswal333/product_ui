@@ -95,6 +95,7 @@ export class ProductDetailsComponent implements OnInit {
     })
   }
   getAllCustomers() {
+    this.resetReviewForm();
     this.review_loader = true;
     this.isReviewSubmitted = false;
     this.review_created_message = "";
