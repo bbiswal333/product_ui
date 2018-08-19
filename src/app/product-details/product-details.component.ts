@@ -37,6 +37,7 @@ export class ProductDetailsComponent implements OnInit {
   review_submit_button: boolean = false;
   isReviewSubmitted: boolean = false;
   charactersRemaining: number = 500;
+  productRating: any;
 
   refreshId: any;
 
@@ -126,9 +127,19 @@ export class ProductDetailsComponent implements OnInit {
       console.log("Getting product reviews..");
       this.productReviews = data;
       this.review_list_loader = false;
+      this.calculateProductRating(data);
       this.product_reviews_count = data.length;
       console.log(data);
     });
+  }
+  calculateProductRating(data){
+    let length = data.length;
+    let sum : number = 0;
+    for(let i = 0; i < length; i++){
+      sum += data[i].rating;
+    }
+    let res = sum/length;
+    this.productRating = res.toFixed(1);
   }
 
   resetReviewForm() {
@@ -139,9 +150,7 @@ export class ProductDetailsComponent implements OnInit {
     this.review_loader = true;
     let body = {
       "productId": this.productId,
-      "reviewDescription": this.description,
-      "rating": 3.5,
-      "sentiments": "Positive"
+      "reviewDescription": this.description
     };
     // console.log(body)
     console.log(this.productReviewApiURL + "/reviews/" + this.customerId)

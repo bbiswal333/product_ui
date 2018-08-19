@@ -16,7 +16,12 @@
 
     <h5 class="card-title">{{product.name}} <span class="card-subtitle mb-2 text-muted">({{product.productId}})</span></h5>
     <p>
-      <span class="badge badge-success" *ngIf="product_reviews_count>0">3.7 <i class="fa fa-star fa-sm"></i></span>
+      
+       <span class="badge badge-success" *ngIf="productRating>3">{{productRating}} <i class="fa fa-star fa-sm"></i></span>
+       <span class="badge badge-warning" *ngIf="productRating>2 && productRating<3">{{productRating}} <i class="fa fa-star fa-sm"></i></span>
+       <span class="badge badge-danger" *ngIf="productRating<3">{{productRating}} <i class="fa fa-star fa-sm"></i></span>
+                
+      
       <span style="margin-left: 5px;" class="text-muted" *ngIf="product_reviews_count==0">No Reviews yet</span>
       <span style="margin-left: 5px;" class="text-muted" *ngIf="product_reviews_count>0">{{product_reviews_count}} reviews</span>
     </p>
@@ -75,6 +80,9 @@
               <div class="pull-left meta">
                 <div class="title h6">
                   <a href="#"><b>{{review.customer.firstName +" "+review.customer.lastName}}</b></a> made a review.
+                  <span class="badge badge-success" *ngIf="review.rating>3">{{review.rating}} <i class="fa fa-star fa-sm"></i></span>
+                  <span class="badge badge-warning" *ngIf="review.rating>2 && review.rating<3">{{review.rating}} <i class="fa fa-star fa-sm"></i></span>
+                  <span class="badge badge-danger" *ngIf="review.rating<3">{{review.rating}} <i class="fa fa-star fa-sm"></i></span>
                 </div>
                 <h6 class="text-muted time">{{review.timestamp | timeAgo}}</h6>
               </div>
@@ -88,6 +96,13 @@
                 <a href="#" class="btn btn-default stat-item">
                   <i class="fa fa-thumbs-down icon"></i>{{review.dislikes}}
                 </a>
+                <div style="float: right">
+                  <i class="text-muted" *ngIf="review.rating==0">Sentiment </i>
+                  <span class="badge badge-success" *ngIf="review.rating>3">{{review.sentiments}} </span>
+                  <span class="badge badge-warning" *ngIf="review.rating>2 && review.rating<3">{{review.sentiments}}</span>
+                  <span class="badge badge-danger" *ngIf="review.rating<3">{{review.sentiments}} </span>
+                
+                </div>
               </div>
             </div>
           </div>
