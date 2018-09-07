@@ -5473,7 +5473,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\c5244525\Desktop\test\product-ui\src\polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! /data/data/com.termux/files/home/code/product_ui/src/polyfills.ts */"./src/polyfills.ts");
 
 
 /***/ })
