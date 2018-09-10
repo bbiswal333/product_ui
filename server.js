@@ -9,6 +9,10 @@ const port = process.env.PORT || 5555;
 // Serve only the static files form the dist directory
 app.use(express.static(__dirname + '/dist/product-ui'));
 
+app.get("/ngsw-worker.js", (req, res) => {
+  res.sendFile(path.resolve(__dirname + '/dist/product-ui/assets/ngsw-worker.js'));
+});
+
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname + '/dist/product-ui/index.html'));
 });

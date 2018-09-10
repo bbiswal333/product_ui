@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
@@ -24,7 +26,8 @@ import { TimeAgoPipe } from 'time-ago-pipe';
     HttpModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule  
+    ReactiveFormsModule ,
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
  ],
   providers: [ProductCatlogComponent],
   bootstrap: [AppComponent]
