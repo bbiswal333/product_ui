@@ -1,9 +1,9 @@
 {
-   "name": "Product Catlog Progressive Web App",
-   "short_name": "Product-Catlog",
+   "name": "Product Catlog Machine Learning",
+   "short_name": "Product Catlog",
    "start_url": "/",
-   "theme_color": "#008080",
-   "background_color": "#008B8B",
+   "theme_color": "#008B8B",
+   "background_color": "#ffffff",
    "display": "standalone",
    "description": "A PWA that is built with Angular",
    "icons": [
